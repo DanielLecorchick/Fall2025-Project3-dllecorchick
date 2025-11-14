@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="home-wrapper">
+
+    <div class="home-hero text-center">
+        <h1 class="hero-title">Movie and Actor AI</h1>
+
+        <p class="hero-subtitle">
+            Welcome to the Movie and Actor AI. Here you can manage movies, actors, and their relationships. You can generate AI-written reviews and Tweets with ChatGPT.
+        </p>
+    </div>
+
+    <div class="card-grid">
+
+        <div class="glass-card home-card">
+            <h2 class="home-card-title">Movies</h2>
+            <p class="home-card-text">
+                View, create, edit, and delete movies.
+                Includes AI-generated reviews.
+            </p>
+            <a class="btn btn-primary home-card-btn" href="/Movies">Movies</a>
+        </div>
+
+        <div class="glass-card home-card">
+            <h2 class="home-card-title">Actors</h2>
+            <p class="home-card-text">
+                View, create, edit, and delete actors.
+                Includes AI-generated tweets.
+            </p>
+            <a class="btn btn-primary home-card-btn" href="/Actors">Actors</a>
+        </div>
+
+        <div class="glass-card home-card">
+            <h2 class="home-card-title">Actor–Movie Relationships</h2>
+            <p class="home-card-text">
+                Connect actors to movies
+                and manage relationships.
+            </p>
+            <a class="btn btn-primary home-card-btn" href="/ActorMovies">Relationships</a>
+        </div>
+
+    </div>
+</div>

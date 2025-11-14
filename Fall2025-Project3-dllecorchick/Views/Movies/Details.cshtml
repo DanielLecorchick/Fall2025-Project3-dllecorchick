@@ -1,0 +1,121 @@
+﻿@model Fall2025_Project3_dllecorchick.Models.MovieDetailsModel
+
+@{
+    ViewData["Title"] = Model.Movie.Title;
+}
+
+<h1 class="page-title mb-4">@Model.Movie.Title</h1>
+
+<div class="glass-card p-4 mb-4">
+    <h4 class="section-title">Movie Info</h4>
+    <hr />
+
+    <dl class="row">
+        <dt class="col-sm-2">Title</dt>
+        <dd class="col-sm-10">@Model.Movie.Title</dd>
+
+        <dt class="col-sm-2">Genre</dt>
+        <dd class="col-sm-10">@Model.Movie.Genre</dd>
+
+        <dt class="col-sm-2">Year</dt>
+        <dd class="col-sm-10">@Model.Movie.Year</dd>
+
+        <dt class="col-sm-2">IMDB</dt>
+        <dd class="col-sm-10">
+            <a href="@Model.Movie.IMDBLink" target="_blank">@Model.Movie.IMDBLink</a>
+        </dd>
+
+        <dt class="col-sm-2">Poster</dt>
+        <dd class="col-sm-10">
+            @if (Model.Movie.Poster != null)
+            {
+                <img src="@Url.Action("PosterImage", "Movies", new { id = Model.Movie.Id })"
+                     alt="Movie Poster"
+                     class="glass-image"
+                     style="max-width:200px; border-radius:16px;" />
+            }
+            else
+            {
+                <span class="text-muted">No poster available.</span>
+            }
+        </dd>
+    </dl>
+</div>
+
+@if (Model.Movie.ActorMovies != null && Model.Movie.ActorMovies.Any())
+{
+    <h3 class="section-title mt-4">Cast</h3>
+
+    <div class="glass-card p-4 mb-4">
+        <ul class="styled-list">
+            @foreach (var am in Model.Movie.ActorMovies)
+            {
+                <li><strong>@am.Actor?.Name</strong></li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <p><em>No actors listed for this movie.</em></p>
+}
+
+<h3 class="section-title mt-4">AI-Generated Reviews for @Model.Movie.Title</h3>
+
+@if (Model.Reviews != null && Model.Reviews.Any())
+{
+    <p class="mt-2">
+        <strong>Average Sentiment:</strong>
+        <span class="badge bg-primary">@Model.AverageSentiment?.ToString("0.00")</span>
+    </p>
+
+    <div class="glass-card p-3">
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Perspective</th>
+                    <th>Review</th>
+                    <th>Sentiment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var (review, sentiment) in Model.Reviews)
+                {
+                    var parts = review
+                    .Split(new[] { "Critic:", "Lover:", "Fan:", "Buff:", "Moviegoer:" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var p in parts)
+                    {
+                        var trimmed = p.Trim();
+                        var firstSpace = trimmed.IndexOf(' ');
+
+                        string label = "Review";
+                        string text = trimmed;
+
+                        if (firstSpace > 0)
+                        {
+                            label = trimmed.Substring(0, firstSpace).Trim();
+                            text = trimmed.Substring(firstSpace).Trim();
+                        }
+
+                        <tr>
+                            <td>@label</td>
+                            <td>@text</td>
+                            <td>@sentiment.ToString("0.000")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p><em>AI reviews are loading or unavailable.</em></p>
+}
+
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Movie.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
