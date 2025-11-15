@@ -15,7 +15,7 @@ namespace Fall2025_Project3_dllecorchick.AI
         {
             _endpoint = config["OpenAI:Endpoint"]!;
             _apiKey = config["OpenAI:ApiKey"]!;
-            _deployment = config["OpenAI:Deployment"] ?? "gpt-4.1-nano";
+            _deployment = config["OpenAI:Deployment"]!;
         }
 
         public async Task<List<(string Review, double Sentiment)>> GenerateReviewsAsync(
